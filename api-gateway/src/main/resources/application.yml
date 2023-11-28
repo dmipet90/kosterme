@@ -17,6 +17,13 @@ spring:
         - Method=GET
         filters:
         - RemoveRequestHeader=Cookie
+      - id: create-user
+        uri: lb://user-ws
+        predicates:
+          - Path=/user
+          - Method=POST
+        filters:
+          - RemoveRequestHeader=Cookie
 eureka:
   client:
     service-url:
