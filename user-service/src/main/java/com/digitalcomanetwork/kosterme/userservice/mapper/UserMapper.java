@@ -4,6 +4,8 @@ import com.digitalcomanetwork.kosterme.userservice.data.UserEntity;
 import com.digitalcomanetwork.kosterme.userservice.shared.UserDto;
 import com.digitalcomanetwork.kosterme.userservice.ui.model.CreateUserRequestModel;
 import com.digitalcomanetwork.kosterme.userservice.ui.model.CreateUserResponseModel;
+import com.digitalcomanetwork.kosterme.userservice.ui.model.LoginRequestModel;
+import jakarta.servlet.ServletInputStream;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
