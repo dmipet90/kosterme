@@ -24,6 +24,10 @@ spring:
           - Method=POST
         filters:
           - RemoveRequestHeader=Cookie
+      - id: h2-console
+        uri: lb://user-ws
+        predicates:
+          - Path=/h2-console
 eureka:
   client:
     service-url:

@@ -4,10 +4,14 @@ import com.digitalcomanetwork.kosterme.userservice.mapper.UserMapper;
 import com.digitalcomanetwork.kosterme.userservice.service.UserService;
 import com.digitalcomanetwork.kosterme.userservice.shared.UserDto;
 import com.digitalcomanetwork.kosterme.userservice.ui.model.CreateUserRequestModel;
+import com.digitalcomanetwork.kosterme.userservice.ui.model.CreateUserResponseModel;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,9 +33,10 @@ public class UserController {
     }
 
     @PostMapping
-    public String createUser(@Valid @RequestBody CreateUserRequestModel userDetails) {
-        UserDto userDto = userMapper.toUserDto(userDetails);
-        userService.createUser(userDto);
-        return "Create user method is called";
+    public ResponseEntity<CreateUserResponseModel> createUser(@Valid @RequestBody CreateUserRequestModel userDetails) {
+        UserDto userDto = userMapper.userRequestToUserDto(userDetails);
+        userDto = userService.createUser(userDto);
+        CreateUserResponseModel response = userMapper.userDtoToUserResponse(userDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

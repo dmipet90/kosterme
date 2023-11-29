@@ -8,7 +8,6 @@ import lombok.Setter;
 
 @Getter @Setter
 public class CreateUserRequestModel {
-
     @NotNull(message = "First name cannot be null")
     @Size(min = 2, message = "First name must not be less than two characters")
     private String firstName;
