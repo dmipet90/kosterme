@@ -1,6 +1,8 @@
 package com.digitalcomanetwork.kosterme.userservice.security;
 
 import com.digitalcomanetwork.kosterme.userservice.config.GatewayProperties;
+import com.digitalcomanetwork.kosterme.userservice.config.LoginProperties;
+import com.digitalcomanetwork.kosterme.userservice.config.TokenProperties;
 import com.digitalcomanetwork.kosterme.userservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @RequiredArgsConstructor
 public class WebSecurity {
     private final GatewayProperties gatewayProperties;
+    private final TokenProperties tokenProperties;
+    private final LoginProperties loginProperties;
     private final UserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -36,13 +40,16 @@ public class WebSecurity {
 
         AuthenticationManager authenticationManager = authenticationManagerBuilder.build();
 
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(userService, tokenProperties, authenticationManager);
+        authenticationFilter.setFilterProcessesUrl(loginProperties.getUrlPath());
+
         http.csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.POST, "/user")
                         .access(new WebExpressionAuthorizationManager("hasIpAddress('"+ gatewayProperties.getIp() +"')"))
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll())
-                .addFilter(new AuthenticationFilter(authenticationManager))
+                .addFilter(authenticationFilter)
                 .authenticationManager(authenticationManager)
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));

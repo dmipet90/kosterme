@@ -28,6 +28,13 @@ spring:
         uri: lb://user-ws
         predicates:
           - Path=/h2-console
+      - id: user-ws-login
+        uri: lb://user-ws
+        predicates:
+          - Path=/user/login
+          - Method=POST
+        filters:
+          - RemoveRequestHeader=Cookie
 eureka:
   client:
     service-url:
