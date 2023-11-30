@@ -46,7 +46,9 @@ public class WebSecurity {
         http.csrf(AbstractHttpConfigurer::disable);
 
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, "/user")
+                .requestMatchers(HttpMethod.POST, "/user/register")
+                        .access(new WebExpressionAuthorizationManager("hasIpAddress('"+ gatewayProperties.getIp() +"')"))
+                .requestMatchers(HttpMethod.GET, "/user/status/check")
                         .access(new WebExpressionAuthorizationManager("hasIpAddress('"+ gatewayProperties.getIp() +"')"))
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll())
                 .addFilter(authenticationFilter)

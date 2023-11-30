@@ -23,7 +23,7 @@ spring:
       - id: user-ws-register
         uri: lb://user-ws
         predicates:
-          - Path=/user-ws/user
+          - Path=/user-ws/user/register
           - Method=POST
         filters:
           - RemoveRequestHeader=Cookie
