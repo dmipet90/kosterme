@@ -2,6 +2,11 @@ server:
   port: ${PORT:0}
 gateway:
   ip: 192.168.8.159
+token:
+  expiration-time: 3600000
+  secret: d7m0hha7sbtfa71au1fki7e5flpq9pl6v3p5bplsblm8yeze0da3khkxwvbxl16j
+login:
+  url-path: /user/login
 spring:
   application:
     name: user-ws

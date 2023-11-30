@@ -5,29 +5,45 @@ spring:
     name: api-gateway
   cloud:
     gateway:
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+      #discovery:
+        #locator:
+          #enabled: true
+          #lower-case-service-id: true
       routes:
       - id: user-status-check
         uri: lb://user-ws
         predicates:
-        - Path=/user/status/check
+        - Path=/user-ws/user/status/check
         - Method=GET
+        - Header=Authorization, Bearer (.*)
         filters:
         - RemoveRequestHeader=Cookie
-      - id: create-user
+        - RewritePath=/user-ws/(?<segment>.*), /$\{segment}
+        #- AuthorizationHeaderFilter
+      - id: user-ws-register
         uri: lb://user-ws
         predicates:
-          - Path=/user
+          - Path=/user-ws/user/register
           - Method=POST
         filters:
           - RemoveRequestHeader=Cookie
-      - id: h2-console
+          - RewritePath=/user-ws/(?<segment>.*), /$\{segment}
+      - id: user-ws-h2-console
         uri: lb://user-ws
         predicates:
-          - Path=/h2-console
+          - Path=/user-ws/h2-console
+          - Method=GET
+        filters:
+          - RemoveRequestHeader=Cookie
+          - RewritePath=/user-ws/(?<segment>.*), /$\{segment}
+      - id: user-ws-login
+        uri: lb://user-ws
+        predicates:
+          - Path=/user-ws/user/login
+          - Method=POST
+        filters:
+          - RemoveRequestHeader=Cookie
+          - RewritePath=/user-ws/(?<segment>.*), /$\{segment}
 eureka:
   client:
     service-url:

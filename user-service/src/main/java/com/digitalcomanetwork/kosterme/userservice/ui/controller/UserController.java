@@ -32,7 +32,7 @@ public class UserController {
         return "Working on port " + env.getProperty("local.server.port");
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<CreateUserResponseModel> createUser(@Valid @RequestBody CreateUserRequestModel userDetails) {
         UserDto userDto = userMapper.userRequestToUserDto(userDetails);
         userDto = userService.createUser(userDto);
