@@ -1,5 +1,7 @@
 server:
   port: 8082
+token:
+  secret: dgjorufhrsnjdu438fkdj38fdmcv7dm3ckvhrsnjjuwelueivhe848fhedldh5ndk
 spring:
   application:
     name: api-gateway
@@ -15,11 +17,10 @@ spring:
         predicates:
         - Path=/user-ws/user/status/check
         - Method=GET
-        - Header=Authorization, Bearer (.*)
         filters:
         - RemoveRequestHeader=Cookie
         - RewritePath=/user-ws/(?<segment>.*), /$\{segment}
-        #- AuthorizationHeaderFilter
+        - AuthorizationHeaderFilter
       - id: user-ws-register
         uri: lb://user-ws
         predicates:
