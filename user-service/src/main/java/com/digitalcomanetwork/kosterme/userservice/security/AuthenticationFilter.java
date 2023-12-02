@@ -5,17 +5,11 @@ import com.digitalcomanetwork.kosterme.userservice.service.UserService;
 import com.digitalcomanetwork.kosterme.userservice.shared.UserDto;
 import com.digitalcomanetwork.kosterme.userservice.ui.model.LoginRequestModel;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.security.SecureDigestAlgorithm;
-import io.jsonwebtoken.security.SignatureAlgorithm;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import org.bouncycastle.jcajce.BCFKSLoadStoreParameter;
-import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,12 +18,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.core.userdetails.User;
 
 import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
 
 
@@ -71,6 +63,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         Instant now = Instant.now();
         String token = Jwts.builder()
+                .claim("scope", auth.getAuthorities())
                 .subject(userDetails.getUserId())
                 .expiration(Date.from(now.
                         plusMillis(tokenProperties.getExpirationTime())))
