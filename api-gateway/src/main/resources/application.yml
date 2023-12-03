@@ -20,7 +20,16 @@ spring:
         filters:
         - RemoveRequestHeader=Cookie
         - RewritePath=/user-ws/(?<segment>.*), /$\{segment}
-        - AuthorizationHeaderFilter
+        #- AuthorizationHeaderFilter
+      - id: product-status-check
+        uri: lb://product-ws
+        predicates:
+          - Path=/product-ws/product/status/check
+          - Method=GET
+        filters:
+          - RemoveRequestHeader=Cookie
+          - RewritePath=/product-ws/(?<segment>.*), /$\{segment}
+          #- AuthorizationHeaderFilter
       - id: user-ws-register
         uri: lb://user-ws
         predicates:
@@ -29,6 +38,14 @@ spring:
         filters:
           - RemoveRequestHeader=Cookie
           - RewritePath=/user-ws/(?<segment>.*), /$\{segment}
+      - id: product-ws-create
+        uri: lb://product-ws
+        predicates:
+          - Path=/product-ws/product/create
+          - Method=POST
+        filters:
+          - RemoveRequestHeader=Cookie
+          - RewritePath=/product-ws/(?<segment>.*), /$\{segment}
       - id: user-ws-h2-console
         uri: lb://user-ws
         predicates:
@@ -37,6 +54,14 @@ spring:
         filters:
           - RemoveRequestHeader=Cookie
           - RewritePath=/user-ws/(?<segment>.*), /$\{segment}
+      - id: product-ws-h2-console
+        uri: lb://product-ws
+        predicates:
+          - Path=/product-ws/h2-console
+          - Method=GET
+        filters:
+          - RemoveRequestHeader=Cookie
+          - RewritePath=/product-ws/(?<segment>.*), /$\{segment}
       - id: user-ws-login
         uri: lb://user-ws
         predicates:
