@@ -12,6 +12,7 @@ spring:
           #enabled: true
           #lower-case-service-id: true
       routes:
+      # Microservice status check routes START
       - id: user-status-check
         uri: lb://user-ws
         predicates:
@@ -20,7 +21,6 @@ spring:
         filters:
         - RemoveRequestHeader=Cookie
         - RewritePath=/user-ws/(?<segment>.*), /$\{segment}
-        #- AuthorizationHeaderFilter
       - id: product-status-check
         uri: lb://product-ws
         predicates:
@@ -29,7 +29,15 @@ spring:
         filters:
           - RemoveRequestHeader=Cookie
           - RewritePath=/product-ws/(?<segment>.*), /$\{segment}
-          #- AuthorizationHeaderFilter
+      - id: file-upload-status-check
+        uri: lb://file-upload-ws
+        predicates:
+          - Path=/file-upload-ws/file/status/check
+          - Method=GET
+        filters:
+          - RemoveRequestHeader=Cookie
+          - RewritePath=/file-upload-ws/(?<segment>.*), /$\{segment}
+      # Microservice status check routes END
       - id: user-ws-register
         uri: lb://user-ws
         predicates:
@@ -48,6 +56,7 @@ spring:
           - RemoveRequestHeader=Cookie
           - AuthorizationHeaderFilter=ROLE_ADMIN
           - RewritePath=/product-ws/(?<segment>.*), /$\{segment}
+      # H2 console routes START
       - id: user-ws-h2-console
         uri: lb://user-ws
         predicates:
@@ -64,6 +73,15 @@ spring:
         filters:
           - RemoveRequestHeader=Cookie
           - RewritePath=/product-ws/(?<segment>.*), /$\{segment}
+      - id: file-upload-ws-h2-console
+        uri: lb://file-upload-ws
+        predicates:
+          - Path=/file-upload-ws/h2-console
+          - Method=GET
+        filters:
+          - RemoveRequestHeader=Cookie
+          - RewritePath=/file-upload-ws/(?<segment>.*), /$\{segment}
+      # H2 console routes END
       - id: user-ws-login
         uri: lb://user-ws
         predicates:
