@@ -43,8 +43,10 @@ spring:
         predicates:
           - Path=/product-ws/product/create
           - Method=POST
+          - Header=Authorization, Bearer (.*)
         filters:
           - RemoveRequestHeader=Cookie
+          - AuthorizationHeaderFilter=ROLE_ADMIN
           - RewritePath=/product-ws/(?<segment>.*), /$\{segment}
       - id: user-ws-h2-console
         uri: lb://user-ws
