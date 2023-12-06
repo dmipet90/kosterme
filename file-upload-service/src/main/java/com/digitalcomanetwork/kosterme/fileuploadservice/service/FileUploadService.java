@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface FileUploadService {
     FileDto saveAttachment(MultipartFile file) throws Exception;
-    void saveFiles(MultipartFile[] files) throws Exception;
+    List<FileDto> saveFiles(MultipartFile[] files) throws Exception;
     List<FileDto> getAllFiles();
+    FileDto getFile(String fileId);
 }

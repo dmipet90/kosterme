@@ -10,5 +10,6 @@ public class FileDto implements Serializable {
     private String fileId;
     private String fileName;
     private String fileType;
+    private long fileSize;
     private byte[] data;
 }

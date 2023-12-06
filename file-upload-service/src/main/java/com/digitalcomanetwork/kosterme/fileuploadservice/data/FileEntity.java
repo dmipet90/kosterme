@@ -26,13 +26,16 @@ public class FileEntity {
     private String fileName;
     @Column(nullable = false, length = 50)
     private String fileType;
+    @Column(nullable = false)
+    private long fileSize;
     @Lob
     private byte[] data;
 
-    public FileEntity(String fileId, String fileName, String fileType, byte[] data) {
+    public FileEntity(String fileId, String fileName, String fileType, long fileSize, byte[] data) {
         this.fileId = fileId;
         this.fileName = fileName;
         this.fileType = fileType;
+        this.fileSize = fileSize;
         this.data = data;
     }
 }

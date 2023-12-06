@@ -23,9 +23,11 @@ public class WebSecurity {
     protected SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers(HttpMethod.POST, "/file/single")
+                .requestMatchers(HttpMethod.POST, "/file/**")
                         .access(new WebExpressionAuthorizationManager("hasIpAddress('"+ gatewayProperties.getIp() +"')"))
-                .requestMatchers(HttpMethod.GET, "/file/status/check")
+                .requestMatchers(HttpMethod.GET, "/file/**")
+                        .access(new WebExpressionAuthorizationManager("hasIpAddress('"+ gatewayProperties.getIp() +"')"))
+                .requestMatchers(HttpMethod.GET, "/download/**")
                         .access(new WebExpressionAuthorizationManager("hasIpAddress('"+ gatewayProperties.getIp() +"')"))
                 .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

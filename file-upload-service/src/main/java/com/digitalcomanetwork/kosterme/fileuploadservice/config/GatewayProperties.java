@@ -10,4 +10,5 @@ import org.springframework.stereotype.Component;
 @Getter @Setter
 public class GatewayProperties {
     private String ip;
+    private String host;
 }

@@ -56,6 +56,14 @@ spring:
           - RemoveRequestHeader=Cookie
           - AuthorizationHeaderFilter=ROLE_ADMIN
           - RewritePath=/product-ws/(?<segment>.*), /$\{segment}
+      - id: file-upload-ws
+        uri: lb://file-upload-ws
+        predicates:
+          - Path=/file-upload-ws/file/**
+          - Method=GET,POST
+        filters:
+          - RemoveRequestHeader=Cookie
+          - RewritePath=/file-upload-ws/(?<segment>.*), /$\{segment}
       # H2 console routes START
       - id: user-ws-h2-console
         uri: lb://user-ws
