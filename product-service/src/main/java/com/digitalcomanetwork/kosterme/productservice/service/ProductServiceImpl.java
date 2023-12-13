@@ -19,7 +19,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto createProduct(ProductDto productDetails) {
         ProductEntity existingProduct = productRepository.findByName(productDetails.getName());
         if (existingProduct != null) {
-            throw new ProductNameException("Project name '"+existingProduct.getName()+"' already exists");
+            throw new ProductNameException("Product name '"+existingProduct.getName()+"' already exists");
         }
         productDetails.setProductId(UUID.randomUUID().toString());
         ProductEntity productEntity = productMapper.productDtoToProductEntity(productDetails);
