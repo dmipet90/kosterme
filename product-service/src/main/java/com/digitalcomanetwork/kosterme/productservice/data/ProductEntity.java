@@ -5,9 +5,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Max;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name="product")
@@ -18,8 +21,15 @@ public class ProductEntity {
     private long id;
     @Column(nullable = false, unique = true)
     private String productId;
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, unique = true)
     private String name;
     @Column(nullable = false)
+    private String artist;
+    @Column(nullable = false)
     private String description;
+    @Column(nullable = false)
+    private LocalDate releaseDate;
+    private String imageId;
+    @Column(nullable = false)
+    private String category;
 }

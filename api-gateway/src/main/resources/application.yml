@@ -51,10 +51,10 @@ spring:
         predicates:
           - Path=/product-ws/product/create
           - Method=POST
-          - Header=Authorization, Bearer (.*)
+          #- Header=Authorization, Bearer (.*)
         filters:
           - RemoveRequestHeader=Cookie
-          - AuthorizationHeaderFilter=ROLE_ADMIN
+          #- AuthorizationHeaderFilter=ROLE_ADMIN
           - RewritePath=/product-ws/(?<segment>.*), /$\{segment}
       - id: file-upload-ws
         uri: lb://file-upload-ws
